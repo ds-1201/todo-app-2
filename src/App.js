@@ -2,33 +2,7 @@ import "./App.css";
 import React, { Component } from "react";
 import { Button, Input, List } from "antd";
 import Todo from "./Todo";
-
-const DUMMY = [
-  {
-    userId: 1,
-    id: 1,
-    title: "delectus aut autem",
-    completed: false,
-  },
-  {
-    userId: 1,
-    id: 2,
-    title: "quis ut nam facilis et officia qui",
-    completed: true,
-  },
-  {
-    userId: 1,
-    id: 3,
-    title: "fugiat veniam minus",
-    completed: false,
-  },
-  {
-    userId: 1,
-    id: 4,
-    title: "et porro tempora",
-    completed: true,
-  },
-];
+import { getTodos } from "./api/Todo";
 
 export class App extends Component {
   state = {
@@ -37,8 +11,16 @@ export class App extends Component {
     message: "",
   };
 
-  componentDidMount() {
-    this.setState({ todos: DUMMY });
+  async componentDidMount() {
+    try {
+      const data = await getTodos();
+      console.log({ data });
+      this.setState({ todos: data.data });
+    } catch (err) {
+      console.log(err);
+      console.log({ error: err.message });
+      alert("Error: " + err.message);
+    }
   }
 
   handleSubmit = () => {
