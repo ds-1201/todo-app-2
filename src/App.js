@@ -9,16 +9,20 @@ export class App extends Component {
     todos: [],
     modalOpen: false,
     message: "",
+    isLoading: false,
   };
 
   async componentDidMount() {
     try {
+      this.setState({ isLoading: true });
       const data = await getTodos();
       console.log({ data });
       this.setState({ todos: data.data });
+      this.setState({ isLoading: false });
     } catch (err) {
       console.log(err);
       console.log({ error: err.message });
+      this.setState({ isLoading: false });
       alert("Error: " + err.message);
     }
   }
@@ -65,7 +69,7 @@ export class App extends Component {
   };
 
   render() {
-    const { todos } = this.state;
+    const { todos, isLoading } = this.state;
 
     return (
       <div className="App">
@@ -82,10 +86,16 @@ export class App extends Component {
           </Button>
         </div>
         <div className="App__container list-box">
-          {todos?.length === 0 && <h1>You are all set !!</h1>}
-          {todos?.length !== 0 && (
+          {isLoading && <h1>Loading....</h1>}
+          {!isLoading && todos?.length === 0 && <h1>You are all set !!</h1>}
+          {!isLoading && todos?.length !== 0 && (
             <List
               bordered
+              header={
+                <div>
+                  <h1>ToDos :</h1>
+                </div>
+              }
               dataSource={todos}
               renderItem={(todo) => (
                 <Todo

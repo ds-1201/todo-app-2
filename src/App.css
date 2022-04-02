@@ -2,7 +2,7 @@
   width: 100%;
   min-height: 100vh;
   background-color: antiquewhite;
-  padding: 3rem;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -25,24 +25,9 @@
 }
 
 .list-box {
-  margin-top: 3rem;
+  margin-top: 1rem;
 }
 
 .completed {
   text-decoration: line-through;
 }
-
-/* @import "~antd/dist/antd.css";
-
-.App {
-  text-align: center;
-}
-
-.App-header h1 {
-  color: whitesmoke;
-}
-
-.App-content {
-  padding-top: 100px;
-  padding-bottom: 100px;
-} */
