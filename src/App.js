@@ -2,7 +2,7 @@ import "./App.css";
 import React, { Component } from "react";
 import { Button, Input, List } from "antd";
 import Todo from "./Todo";
-import { getTodos } from "./api/Todo";
+import { getTodos } from "./service/Todo";
 
 export class App extends Component {
   state = {

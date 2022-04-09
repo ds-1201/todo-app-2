@@ -30,14 +30,13 @@ class Todo extends Component {
   render() {
     return (
       <>
-        {this.state.modalOpen && (
-          <PopUp
-            handleCancel={this.handleModal}
-            modalOpen={this.state.modalOpen}
-            todo={this.props.todo}
-            handleOk={this.props.handleEdit}
-          />
-        )}
+        <PopUp
+          handleCancel={this.handleModal}
+          modalOpen={this.state.modalOpen}
+          todo={this.props.todo}
+          handleOk={this.props.handleEdit}
+        />
+
         <List.Item
           actions={[
             <Button type="link" onClick={this.handleModal}>
