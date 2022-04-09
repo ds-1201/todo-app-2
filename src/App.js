@@ -1,6 +1,6 @@
 import "./App.css";
 import React, { Component } from "react";
-import { Button, Input, List } from "antd";
+import { Button, Checkbox, Input, List, Table, Tag } from "antd";
 import Todo from "./Todo";
 import { getTodos } from "./service/Todo";
 
@@ -41,7 +41,6 @@ export class App extends Component {
   };
 
   handleDelete = (item) => {
-    console.log(item);
     const newList = this.state.todos?.filter((todo) => todo.id !== item.id);
     return this.setState({ todos: newList });
   };
@@ -86,29 +85,16 @@ export class App extends Component {
           </Button>
         </div>
         <div className="App__container list-box">
-          {isLoading && <h1>Loading....</h1>}
           {!isLoading && todos?.length === 0 && <h1>You are all set !!</h1>}
-          {!isLoading && todos?.length !== 0 && (
-            <List
-              bordered
-              header={
-                <div>
-                  <h1>ToDos :</h1>
-                </div>
-              }
-              dataSource={todos}
-              renderItem={(todo) => (
-                <Todo
-                  key={todo.id}
-                  todo={todo}
-                  handleDelete={this.handleDelete}
-                  handleEdit={this.handleEdit}
-                  handleComplete={this.handleComplete}
-                  handleModal={this.handleModal}
-                />
-              )}
+          {
+            <Todo
+              todos={todos || []}
+              isLoading={isLoading}
+              handleComplete={this.handleComplete}
+              handleDelete={this.handleDelete}
+              handleEdit={this.handleEdit}
             />
-          )}
+          }
         </div>
       </div>
     );

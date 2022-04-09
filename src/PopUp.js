@@ -9,8 +9,10 @@ export class PopUp extends Component {
     };
   }
 
-  componentDidMount() {
-    this.setState({ input: this.props.todo.title });
+  componentDidUpdate(prevProps) {
+    if (this.props.todo !== "" && prevProps.todo !== this.props.todo) {
+      this.setState({ input: this.props.todo.title });
+    }
   }
 
   handleInputChange = (e) => {
