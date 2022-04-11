@@ -12,12 +12,12 @@ const columns = [
     key: "id",
   },
   {
-    title: "Start",
+    title: "Start At",
     dataIndex: "createdAt",
     key: "id",
   },
   {
-    title: "Completed At",
+    title: "Comple At",
     dataIndex: "completedAt",
     key: "id",
   },
@@ -27,7 +27,7 @@ class CompletedTodos extends Component {
   render() {
     const data = this?.props?.todos?.filter((todo) => todo.completed);
     return (
-      <div className="completed__container">
+      <div className="completed__container" style={{ height: "100%" }}>
         <Table bordered dataSource={data || []} columns={columns} rowKey="id" />
       </div>
     );

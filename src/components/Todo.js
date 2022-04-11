@@ -1,4 +1,4 @@
-import { Button, Checkbox, Divider, Table } from "antd";
+import { Button, Checkbox, Divider, message, Popconfirm, Table } from "antd";
 import React, { Component } from "react";
 import "./Todo.css";
 import { DeleteTwoTone, EditTwoTone } from "@ant-design/icons";
@@ -12,6 +12,7 @@ import {
   completeTodo,
 } from "./../actions/todoActions";
 import PropTypes from "prop-types";
+import moment from "moment";
 
 class Todo extends Component {
   constructor() {
@@ -21,6 +22,7 @@ class Todo extends Component {
       active: "",
     };
   }
+  componentDidMount() {}
   render() {
     return (
       <>
@@ -43,6 +45,7 @@ class Todo extends Component {
           loading={this.props.isLoading}
           pagination={{ pageSize: 5 }}
           rowKey="id"
+          title={() => <h1>Todos:</h1>}
         >
           <Column
             title="Check"
@@ -52,23 +55,31 @@ class Todo extends Component {
               <Checkbox
                 defaultChecked={item.completed}
                 onChange={(e) => {
-                  return this.props.completeTodo(item, e.target.checked);
+                  const data = {
+                    id: item.id,
+                    payload: e.target.checked,
+                  };
+                  return this.props.completeTodo(data);
                 }}
               ></Checkbox>
             )}
           />
           <Column
             title="Title"
-            width="60%"
             key="title"
+            width="50%"
             render={(item) => (
               <p className={item.completed ? "completed" : ""}>{item.title}</p>
             )}
           />
           <Column
+            title="Start At"
+            key="id"
+            render={(item) => <p>{item.createdAt}</p>}
+          />
+          <Column
             title="Actions"
             key="id"
-            width="20%"
             render={(item) => (
               <>
                 <Button
@@ -83,14 +94,25 @@ class Todo extends Component {
                   <EditTwoTone />
                 </Button>
                 <Divider type="vertical" />
-                <Button
-                  type="link"
-                  onClick={() => {
+                <Popconfirm
+                  title="Are you sure？"
+                  okText="Yes"
+                  cancelText="No"
+                  placement="right"
+                  onConfirm={() => {
                     this.props.deleteTodo(item);
+                    message.success("Successfully deleted !!");
                   }}
                 >
-                  <DeleteTwoTone twoToneColor="#F4364C" />
-                </Button>
+                  <Button
+                    type="link"
+                    // onClick={() => {
+                    //   this.props.deleteTodo(item);
+                    // }}
+                  >
+                    <DeleteTwoTone twoToneColor="#F4364C" />
+                  </Button>
+                </Popconfirm>
               </>
             )}
           />

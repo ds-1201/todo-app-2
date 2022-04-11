@@ -29,12 +29,16 @@ const reducer = (state = initialState, action) => {
 
       new_list?.forEach((item) => {
         if (item.id === action.payload.id) {
-          item.completed = action.value;
+          item.completed = action.payload.payload;
+          if (action.payload.payload) {
+            item.completedAt = action.time;
+          }
         }
       });
 
       return { ...state, items: new_list };
     }
+
     case EDIT_TODO: {
       let new_list = state.items;
       new_list?.forEach((item) => {
@@ -44,6 +48,7 @@ const reducer = (state = initialState, action) => {
       });
       return { ...state, items: new_list };
     }
+
     case DELETE_TODO: {
       let new_list = state?.items?.filter(
         (item) => item.id !== action.payload.id

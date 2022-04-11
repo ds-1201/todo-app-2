@@ -14,7 +14,7 @@ export const fetchTodos = () => async (dispatch) => {
     dispatch({ type: IS_LOADING });
     const result = await getTodos();
     const time = moment().format("MMM Do YYYY, h:mm:ss");
-    console.log(time);
+    // console.log(time);
     const new_data = result.data.map((item) => {
       return {
         ...item,
@@ -50,8 +50,9 @@ export const editTodo = (data) => (dispatch) => {
   dispatch({ type: EDIT_TODO, payload: data });
 };
 
-export const completeTodo = (data, value) => (dispatch) => {
-  dispatch({ type: COMPLETE_TODO, payload: data, value });
+export const completeTodo = (data) => (dispatch) => {
+  const time = moment().format("MMM Do YYYY, h:mm:ss");
+  dispatch({ type: COMPLETE_TODO, payload: data, time });
 };
 
 export const deleteTodo = (data) => (dispatch) => {

@@ -4,7 +4,14 @@ import CompletedTodos from "../CompletedTodos";
 export class DashboardHistory extends Component {
   render() {
     return (
-      <div>
+      <div
+        style={{
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <CompletedTodos />
       </div>
     );
