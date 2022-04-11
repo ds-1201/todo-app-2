@@ -12,7 +12,6 @@ import {
   completeTodo,
 } from "./../actions/todoActions";
 import PropTypes from "prop-types";
-import moment from "moment";
 
 class Todo extends Component {
   constructor() {
@@ -22,7 +21,7 @@ class Todo extends Component {
       active: "",
     };
   }
-  componentDidMount() {}
+
   render() {
     return (
       <>
