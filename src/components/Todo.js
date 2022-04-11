@@ -1,9 +1,17 @@
 import { Button, Checkbox, Divider, Table } from "antd";
 import React, { Component } from "react";
-import "./App.css";
+import "./Todo.css";
 import { DeleteTwoTone, EditTwoTone } from "@ant-design/icons";
 import PopUp from "./PopUp";
 import Column from "antd/lib/table/Column";
+import { connect } from "react-redux";
+import {
+  createTodo,
+  editTodo,
+  deleteTodo,
+  completeTodo,
+} from "./../actions/todoActions";
+import PropTypes from "prop-types";
 
 class Todo extends Component {
   constructor() {
@@ -25,7 +33,7 @@ class Todo extends Component {
           }}
           modalOpen={this.state.modalOpen}
           todo={this.state.active}
-          handleOk={this.props.handleEdit}
+          handleOk={this.props.editTodo}
         />
 
         <Table
@@ -44,10 +52,7 @@ class Todo extends Component {
               <Checkbox
                 defaultChecked={item.completed}
                 onChange={(e) => {
-                  return this.props.handleComplete({
-                    id: item.id,
-                    payload: e.target.checked,
-                  });
+                  return this.props.completeTodo(item, e.target.checked);
                 }}
               ></Checkbox>
             )}
@@ -81,7 +86,7 @@ class Todo extends Component {
                 <Button
                   type="link"
                   onClick={() => {
-                    this.props.handleDelete(item);
+                    this.props.deleteTodo(item);
                   }}
                 >
                   <DeleteTwoTone twoToneColor="#F4364C" />
@@ -95,28 +100,20 @@ class Todo extends Component {
   }
 }
 
-export default Todo;
+Todo.propTypes = {
+  createTodo: PropTypes.func,
+  todos: PropTypes.array,
+  isLoading: PropTypes.bool,
+};
 
-{
-  /* <List.Item
-  actions={[
-    <Button type="link" onClick={this.handleModal}>
-      <EditTwoTone />
-    </Button>,
-    <Button type="link" onClick={this.deleteHandler}>
-      <DeleteTwoTone twoToneColor="#F4364C" />
-    </Button>,
-  ]}
->
-  <div style={{ marginRight: "0.5rem" }}>
-    <Checkbox
-      defaultChecked={this.props.todo.completed}
-      onChange={this.completeHandler}
-    ></Checkbox>
-  </div>
-  <List.Item.Meta
-    title={this.props.todo.title}
-    className={this.props.todo.completed ? "completed" : ""}
-  />
-</List.Item>; */
-}
+const mapStateToProps = (state) => ({
+  todos: state.todos.items,
+  isLoading: state.todos.isLoading,
+});
+
+export default connect(mapStateToProps, {
+  createTodo,
+  editTodo,
+  deleteTodo,
+  completeTodo,
+})(Todo);

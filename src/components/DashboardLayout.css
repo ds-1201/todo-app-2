@@ -1,0 +1,17 @@
+.layout {
+  min-height: 100vh;
+  overflow: hidden;
+}
+.header {
+  background-color: #1890ff;
+  color: white;
+  text-align: center;
+}
+.side-layout {
+  background-color: #fff;
+}
+
+.main-layout {
+  background-color: antiquewhite;
+  padding: 2rem;
+}

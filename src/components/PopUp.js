@@ -20,8 +20,8 @@ export class PopUp extends Component {
   };
 
   okHandler = () => {
-    const newItem = { id: this.props.todo.id, payload: this.state.input };
-    this.props.handleOk(newItem);
+    const new_item = { ...this.props.todo, title: this.state.input };
+    this.props.handleOk(new_item);
     this.props.handleCancel();
   };
 

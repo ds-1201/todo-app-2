@@ -1,102 +1,18 @@
 import "./App.css";
 import React, { Component } from "react";
-import { Button, Checkbox, Input, List, Table, Tag } from "antd";
-import Todo from "./Todo";
-import { getTodos } from "./service/Todo";
+import DashboardLayout from "./components/DashboardLayout";
+// import AddTodos from "./components/AddTodos";
+import { Provider } from "react-redux";
+import { store } from "./store";
 
-export class App extends Component {
-  state = {
-    todos: [],
-    modalOpen: false,
-    message: "",
-    isLoading: false,
-  };
-
-  async componentDidMount() {
-    try {
-      this.setState({ isLoading: true });
-      const data = await getTodos();
-      console.log({ data });
-      this.setState({ todos: data.data });
-      this.setState({ isLoading: false });
-    } catch (err) {
-      console.log(err);
-      console.log({ error: err.message });
-      this.setState({ isLoading: false });
-      alert("Error: " + err.message);
-    }
-  }
-
-  handleSubmit = () => {
-    const message = this.state.message;
-    const newMessage = {
-      id: Math.random().toString(),
-      title: message,
-      completed: false,
-    };
-    return this.setState((prev) => ({
-      todos: [...prev.todos, newMessage],
-      message: "",
-    }));
-  };
-
-  handleDelete = (item) => {
-    const newList = this.state.todos?.filter((todo) => todo.id !== item.id);
-    return this.setState({ todos: newList });
-  };
-
-  handleEdit = (item) => {
-    let newList = this.state.todos;
-    for (let i = 0; i < newList.length; i++) {
-      if (newList[i].id === item.id) {
-        newList[i].title = item.payload;
-        break;
-      }
-    }
-    return this.setState({ todos: newList });
-  };
-
-  handleComplete = (item) => {
-    let newList = this.state.todos;
-    for (let i = 0; i < newList.length; i++) {
-      if (newList[i].id === item.id) {
-        newList[i].completed = item.payload;
-        break;
-      }
-    }
-    return this.setState({ todos: newList });
-  };
-
+class App extends Component {
   render() {
-    const { todos, isLoading } = this.state;
-
     return (
-      <div className="App">
-        <div className="App__container form-box">
-          <Input
-            size="large"
-            placeholder="Add TODO"
-            value={this.state.message}
-            onChange={(e) => this.setState({ message: e.target.value })}
-          />
-
-          <Button size="large" type="primary" onClick={this.handleSubmit}>
-            Submit
-          </Button>
+      <Provider store={store}>
+        <div>
+          <DashboardLayout />
         </div>
-        <div className="App__container list-box">
-          {!isLoading && todos?.length === 0 && <h1>You are all set !!</h1>}
-          {
-            <Todo
-              todos={todos || []}
-              isLoading={isLoading}
-              handleComplete={this.handleComplete}
-              handleDelete={this.handleDelete}
-              handleEdit={this.handleEdit}
-            />
-          }
-        </div>
-      </div>
+      </Provider>
     );
   }
 }

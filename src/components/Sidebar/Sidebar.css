@@ -1,0 +1,10 @@
+.sidebar {
+  width: 100%;
+}
+
+.sidebar-logo {
+  margin: 1rem;
+
+  background-color: gray;
+  height: 80px;
+}
