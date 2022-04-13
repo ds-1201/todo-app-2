@@ -28,11 +28,10 @@ const reducer = (state = initialState, action) => {
       let new_list = state.items;
 
       new_list?.forEach((item) => {
+        console.log({ item });
         if (item.id === action.payload.id) {
-          item.completed = action.payload.payload;
-          if (action.payload.payload) {
-            item.completedAt = action.time;
-          }
+          item.completed = !item.completed;
+          item.completedAt = action.time;
         }
       });
 
@@ -44,6 +43,7 @@ const reducer = (state = initialState, action) => {
       new_list?.forEach((item) => {
         if (item.id === action.payload.id) {
           item.title = action.payload.title;
+          item.createdAt = action.payload.createdAt;
         }
       });
       return { ...state, items: new_list };

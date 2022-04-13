@@ -3,5 +3,12 @@
   padding: 2rem;
   width: 95%;
   border-radius: 0.8rem;
-  height: 80vh;
+  margin-bottom: 2rem;
+}
+
+.completed-todos {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
 }

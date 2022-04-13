@@ -9,9 +9,15 @@
 }
 .side-layout {
   background-color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  overflow: auto;
 }
 
 .main-layout {
   background-color: antiquewhite;
   padding: 2rem;
+  padding-left: 320px;
 }

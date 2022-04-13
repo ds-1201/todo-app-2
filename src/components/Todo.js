@@ -22,7 +22,18 @@ class Todo extends Component {
     };
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.todos !== this.props.todos) {
+      let date = this.props.todos?.map((item) => item.createdAt);
+      console.log(date);
+    }
+  }
+
   render() {
+    const todos = this.props.todos.filter((todo) => {
+      return !todo.completed;
+    });
+
     return (
       <>
         <PopUp
@@ -39,37 +50,36 @@ class Todo extends Component {
 
         <Table
           bordered
-          dataSource={this.props.todos}
+          dataSource={todos}
           scroll={{ x: 700, y: "45vh" }}
           loading={this.props.isLoading}
           pagination={{ pageSize: 5 }}
           rowKey="id"
           title={() => <h1>Todos:</h1>}
         >
-          <Column
+          {/* <Column
             title="Check"
             key="id"
             width="10%"
             render={(item) => (
-              <Checkbox
-                defaultChecked={item.completed}
-                onChange={(e) => {
+              <div
+                onClick={(e) => {
                   const data = {
                     id: item.id,
-                    payload: e.target.checked,
                   };
+                  message.success("Task Successfully Completed");
                   return this.props.completeTodo(data);
                 }}
-              ></Checkbox>
+              >
+                <Checkbox checked={item.completed}></Checkbox>
+              </div>
             )}
-          />
+          /> */}
           <Column
             title="Title"
             key="title"
             width="50%"
-            render={(item) => (
-              <p className={item.completed ? "completed" : ""}>{item.title}</p>
-            )}
+            render={(item) => <p>{item.title}</p>}
           />
           <Column
             title="Start At"
@@ -99,8 +109,8 @@ class Todo extends Component {
                   cancelText="No"
                   placement="right"
                   onConfirm={() => {
-                    this.props.deleteTodo(item);
-                    message.success("Successfully deleted !!");
+                    this.props.completeTodo(item);
+                    message.success("Task Successfully completed !!");
                   }}
                 >
                   <Button
