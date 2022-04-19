@@ -5,12 +5,8 @@ import { DeleteTwoTone, EditTwoTone } from "@ant-design/icons";
 import PopUp from "./PopUp";
 import Column from "antd/lib/table/Column";
 import { connect } from "react-redux";
-import {
-  createTodo,
-  editTodo,
-  deleteTodo,
-  completeTodo,
-} from "./../actions/todoActions";
+import actions from "./../actions/todoActions";
+import todoHelper from "./../helper/todoHelper";
 import PropTypes from "prop-types";
 
 class Todo extends Component {
@@ -33,6 +29,8 @@ class Todo extends Component {
     const todos = this.props.todos.filter((todo) => {
       return !todo.completed;
     });
+
+    console.log("Ran");
 
     return (
       <>
@@ -132,7 +130,6 @@ class Todo extends Component {
 }
 
 Todo.propTypes = {
-  createTodo: PropTypes.func,
   todos: PropTypes.array,
   isLoading: PropTypes.bool,
 };
@@ -142,9 +139,11 @@ const mapStateToProps = (state) => ({
   isLoading: state.todos.isLoading,
 });
 
-export default connect(mapStateToProps, {
-  createTodo,
-  editTodo,
-  deleteTodo,
-  completeTodo,
-})(Todo);
+const mapDispatchToProps = (dispatch) => ({
+  editTodo: (payload) => dispatch(actions.editTodo(payload)),
+  completeTodo: (payload, time = todoHelper.getTime()) =>
+    dispatch(actions.completeTodo(payload, time)),
+  deleteTodo: (payload) => dispatch(actions.deleteTodo(payload)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Todo);

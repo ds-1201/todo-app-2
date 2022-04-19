@@ -3,7 +3,8 @@ import "./AddTodos.css";
 import { Button, Input } from "antd";
 import Todo from "./Todo";
 import { connect } from "react-redux";
-import { createTodo } from "./../actions/todoActions";
+import actions from "./../actions/todoActions";
+import todoHelper from "./../helper/todoHelper";
 import PropTypes from "prop-types";
 
 class AddTodos extends Component {
@@ -13,7 +14,8 @@ class AddTodos extends Component {
   };
 
   handleSubmit = () => {
-    this.props.createTodo(this.state.message, this.props.todos.length);
+    const new_data = todoHelper.createTodo(this.state.message);
+    this.props.createTodo(new_data);
     return this.setState({ message: "" });
   };
 
@@ -76,6 +78,8 @@ const mapStateToProps = (state) => ({
   isLoading: state.todos.isLoading,
 });
 
-export default connect(mapStateToProps, {
-  createTodo,
-})(AddTodos);
+const mapDispatchToProps = (dispatch) => ({
+  createTodo: (payload) => dispatch(actions.createTodo(payload)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddTodos);

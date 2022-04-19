@@ -6,56 +6,25 @@ import {
   COMPLETE_TODO,
   DELETE_TODO,
 } from "./types";
-import { getTodos } from "./../service/Todo";
-import moment from "moment";
 
-export const fetchTodos = () => async (dispatch) => {
-  try {
-    dispatch({ type: IS_LOADING });
-    const result = await getTodos();
-    const time = moment().format("MM/DD/YYYY");
-    // console.log(time);
-    const new_data = result.data.map((item) => {
-      return {
-        ...item,
-        createdAt: time,
-        completedAt: item.completed ? time : "",
-      };
-    });
-    dispatch({ type: FETCH_TODOS, payload: new_data });
-    dispatch({ type: IS_LOADING });
-  } catch (err) {
-    console.log(err.message);
-    alert(err.message);
-    dispatch({ type: IS_LOADING });
-  }
-};
+let actions = {};
 
-export const createTodo = (data, num) => (dispatch) => {
-  const id = Math.random().toString();
+actions.fetchTodos = (payload) => ({ type: FETCH_TODOS, payload: payload });
 
-  const createdAt = moment().format("MM/DD/YYYY");
-  const new_todo = {
-    id,
-    createdAt,
-    completedAt: "",
-    title: data,
-    completed: false,
-  };
+actions.isLoading = () => ({
+  type: IS_LOADING,
+});
 
-  dispatch({ type: NEW_TODO, payload: new_todo });
-};
+actions.createTodo = (payload) => ({ type: NEW_TODO, payload });
 
-export const editTodo = (data) => (dispatch) => {
-  dispatch({ type: EDIT_TODO, payload: data });
-};
+actions.editTodo = (payload) => ({ type: EDIT_TODO, payload });
 
-export const completeTodo = (data) => (dispatch) => {
-  const time = moment().format("MM/DD/YYYY");
-  console.log({ data });
-  dispatch({ type: COMPLETE_TODO, payload: data, time });
-};
+actions.completeTodo = (data, time) => ({
+  type: COMPLETE_TODO,
+  payload: data,
+  time,
+});
 
-export const deleteTodo = (data) => (dispatch) => {
-  dispatch({ type: DELETE_TODO, payload: data });
-};
+actions.deleteTodo = (data) => ({ type: DELETE_TODO, payload: data });
+
+export default actions;

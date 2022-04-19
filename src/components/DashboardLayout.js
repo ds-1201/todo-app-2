@@ -5,14 +5,26 @@ import Sidebar from "./Sidebar/Sidebar";
 import DashboardMain from "./DashboardMain/DashboardMain";
 import DashboardHistory from "./DashboardHistory/DashboardHistory";
 import { connect } from "react-redux";
-import { fetchTodos } from "../actions/todoActions";
+import actions from "./../actions/todoActions";
 import PropTypes from "prop-types";
+import { getTodos } from "../service/Todo";
+import { transformTodos } from "../helper/todoHelper";
 
 const { Sider, Content } = Layout;
 
 class DashboardLayout extends Component {
-  componentDidMount() {
-    this.props.fetchTodos();
+  async componentDidMount() {
+    try {
+      this.props.loading();
+      const result = await getTodos();
+      const new_data = transformTodos(result.data);
+      this.props.fetchTodos(new_data);
+      this.props.loading();
+    } catch (err) {
+      console.log(err.message);
+      alert(err.message);
+      this.props.loading();
+    }
   }
   render() {
     return (
@@ -40,4 +52,9 @@ const mapStateToProps = (state) => ({
   page: state.pages.number,
 });
 
-export default connect(mapStateToProps, { fetchTodos })(DashboardLayout);
+const mapDispatchToProps = (dispatch) => ({
+  loading: () => dispatch(actions.isLoading()),
+  fetchTodos: (payload) => dispatch(actions.fetchTodos(payload)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(DashboardLayout);
